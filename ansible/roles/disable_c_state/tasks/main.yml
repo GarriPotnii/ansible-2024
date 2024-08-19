@@ -1,0 +1,21 @@
+# roles/disable_c_state/tasks/main.yml
+---
+- name: Add noacpi parameter to GRUB configuration
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash noacpi processor.max_cstate=0"'
+    create: yes
+  notify:
+    - Update GRUB
+
+- name: copy script c-states
+  ansible.builtin.copy:
+    src: set_disable_c_state.sh
+    dest: /tmp/set_disable_c_state.sh
+    mode: '0755'
+
+- name: execute c-states
+  ansible.builtin.command:
+    cmd: /tmp/set_disable_c_state.sh
+  become: true

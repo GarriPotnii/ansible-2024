@@ -1,0 +1,6 @@
+---
+- name: Execute c-state role
+  hosts: all
+  become: yes
+  roles:
+    - disable_c_state

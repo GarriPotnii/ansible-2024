@@ -1,0 +1,5 @@
+---
+- name: Execute role
+  hosts: all
+  roles:
+    - encrypt_second_disk

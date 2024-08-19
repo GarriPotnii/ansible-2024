@@ -1,0 +1,41 @@
+# roles/encrypt_near_root_part/defaults/main.yml
+---
+- name: name root disk
+  shell: lsblk -no MOUNTPOINTS,NAME | grep '^/ ' | awk '{print $2}'
+  register: root_disk_output
+  changed_when: false
+
+- name: extract name root disk
+  set_fact:
+    root_disk: "{{ root_disk_output.stdout }}"
+
+- name: find partition
+  shell: lsblk -no NAME,MOUNTPOINTS | awk '$2 == "" { print $1 }' | grep -Eo xvda[0-9]+$
+  register: target_partition_output
+  changed_when: false
+
+- name: extract target partittion
+  set_fact:
+    target_partition: "/dev/{{ target_partition_output.stdout }}"
+
+- name: check partition
+  fail:
+    msg: "Not found partition"
+  when: target_partition_output.stdout == ""
+
+- name: Encrypt the disk with LUKS
+  command: >
+    echo "{{ luks_password }}" |
+    cryptsetup luksFormat {{ target_partition }} --key-file -
+  args:
+    creates: "/dev/mapper/encrypted_partition"
+  register: luks_format
+  ignore_errors: yes
+
+- name: Open the encrypted disk
+  command: >
+    echo "{{ luks_password }}" |
+    cryptsetup open {{ target_partition }} encrypted_partition --key-file -
+  register: cryptsetup_open
+  failed_when: cryptsetup_open.rc != 0
+  no_log: true

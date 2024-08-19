@@ -1,0 +1,5 @@
+---
+- name: Execute CPU performance mode role
+  hosts: all
+  roles:
+    - enable_performance_cpu

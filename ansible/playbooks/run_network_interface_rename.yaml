@@ -1,0 +1,5 @@
+---
+- name: Execute role
+  hosts: all
+  roles:
+    - network_interface_rename

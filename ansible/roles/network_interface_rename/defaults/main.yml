@@ -1,0 +1,3 @@
+# roles/network_interface_rename/defaults/main.yml
+---
+netplan_config_path: "/etc/netplan/50-cloud-init.yaml"

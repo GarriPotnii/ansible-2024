@@ -1,0 +1,3 @@
+# roles/encrypt_near_root_part/defaults/main.yml
+---
+#filesystem_type: "ext4"
