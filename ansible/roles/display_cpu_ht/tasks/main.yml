@@ -1,18 +1,18 @@
 # roles/display_cpu_ht/tasks/main.yml
 ---
 - name: Display list of CPUs
-  command: lscpu
+  ansible.builtin.command: lscpu
   register: lscpu_output
 
 - name: Show list of CPUs
-  debug:
+  ansible.builtin.debug:
     msg: "{{ lscpu_output.stdout }}"
 
 - name: Check if Hyper-Threading is enabled
-  command: "grep 'ht' /proc/cpuinfo"
+  ansible.builtin.command: grep 'ht' /proc/cpuinfo
   register: hyperthreading_check
   changed_when: false
 
 - name: Display Hyper-Threading information
-  debug:
+  ansible.builtin.debug:
     msg: "{{ hyperthreading_check.stdout if hyperthreading_check.stdout else 'Hyper-Threading is not enabled or information not found.' }}"

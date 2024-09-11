@@ -1,4 +1,4 @@
 #roles/disable_c_state/handlers/main.yml
 ---
 - name: Update GRUB
-  command: update-grub
+  ansible.builtin.command: update-grub

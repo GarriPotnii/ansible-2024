@@ -1,6 +1,6 @@
 ---
 - name: Execute display role
   hosts: all
-  
+
   roles:
     - display_cpu_ht

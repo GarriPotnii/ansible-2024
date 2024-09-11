@@ -1,4 +1,4 @@
 #roles/enable_performance_cpu/handlers/main.yml
 ---
 - name: Update GRUB
-  command: update-grub
+  ansible.builtin.command: update-grub

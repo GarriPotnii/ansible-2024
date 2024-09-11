@@ -1,32 +1,32 @@
 ---
 - name: Check if the disk exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ disk_name }}"
   register: disk_check
 
 - name: Fail if disk does not exist
-  fail:
-    msg: "The disk {{ disk_name }} does not exist."
+  ansible.builtin.fail:
+    msg: The disk {{ disk_name }} does not exist.
   when: not disk_check.stat.exists
 
 - name: Encrypt the disk with LUKS
-  command: >
+  ansible.builtin.command: >
     echo "{{ luks_password }}" |
     cryptsetup luksFormat {{ disk_name }} --key-file -
   args:
-    creates: "/dev/mapper/encrypted_disk"
+    creates: /dev/mapper/encrypted_disk
   register: luks_format
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Open the encrypted disk
-  command: >
+  ansible.builtin.command: >
     echo "{{ luks_password }}" |
     cryptsetup open {{ disk_name }} encrypted_disk --key-file -
   register: cryptsetup_open
   failed_when: cryptsetup_open.rc != 0
   no_log: true
 
-- name: check
-  command: ls -l /dev/mapper/encrypted_disk
+- name: Check
+  ansible.builtin.command: ls -l /dev/mapper/encrypted_disk
   register: encrypted_disk_check
   failed_when: false
