@@ -1,18 +1,24 @@
 # roles/network_interface_rename/tasks/main.yml
 ---
 - name: Get the current active network interface
-  ansible.builtin.shell: ip -o route show default | awk '{print $5}'
-  register: active_interface
+  ansible.builtin.command: ip -o route show default
+  register: route_output
   changed_when: false
 
 - name: Set the active network interface name
   ansible.builtin.set_fact:
-    current_interface_name: "{{ active_interface.stdout.strip() }}"
+    current_interface_name: >
+      {{
+        route_output.stdout_lines
+        | select('match', '^default')
+        | map('regex_replace', '.* dev ([^ ]+).*', '\\1')
+        | first
+      }}
 
 - name: Check if the current interface name is already
   ansible.builtin.fail:
     msg: The active network interface is already named {{ network_interface_rename_new_interface_name }}.
-  when: current_interface_name == new_interface_name
+  when: current_interface_name == network_interface_rename_new_interface_name
 
 - name: Check if netplan configuration file exists
   ansible.builtin.stat:
@@ -31,13 +37,29 @@
 - name: Apply netplan configuration
   ansible.builtin.command: netplan apply
   changed_when: update_netplan.rc != 0
-  
+
+- name: Get the current network interface from default route
+  ansible.builtin.command: ip -o route show default
+  register: route_output
+  changed_when: false
+
+- name: Parse the renamed network interface from route output
+  ansible.builtin.set_fact:
+    renamed_interface: >
+      {{
+        route_output.stdout_lines
+        | select('match', '^default')
+        | map('regex_replace', '.* dev ([^ ]+).*', '\\1')
+        | first
+      }}
+
 - name: Check if the network interface was successfully renamed
-  ansible.builtin.shell: ip -o route show default | awk '{print $5}'
-  register: renamed_interface
-  failed_when: renamed_interface.stdout.strip() != "{{ network_interface_rename_new_interface_name }}"
+  ansible.builtin.assert:
+    that:
+      - renamed_interface == network_interface_rename_new_interface_name
+    fail_msg: "Network interface rename failed: expected {{ network_interface_rename_new_interface_name }}, but got {{ renamed_interface }}"
   changed_when: false
 
 - name: Display the renamed network interface name
   ansible.builtin.debug:
-    msg: The network interface is now named {{ renamed_interface.stdout.strip() }}
+    msg: The network interface is now named {{ renamed_interface }}

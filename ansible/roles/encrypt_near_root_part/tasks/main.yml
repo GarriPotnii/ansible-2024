@@ -10,13 +10,18 @@
     root_disk: "{{ root_disk_output.stdout_lines | select('match', '^/ ') | map('regex_replace', '^/ ', '') | first }}"
 
 - name: Find partition
-  ansible.builtin.shell: lsblk -no NAME,MOUNTPOINTS | awk '$2 == "" { print $1 }' | grep -Eo xvda[0-9]+$
+  ansible.builtin.command: lsblk -no NAME,MOUNTPOINT
   register: target_partition_output
   changed_when: false
 
 - name: Extract target partittion
   ansible.builtin.set_fact:
-    target_partition: /dev/{{ target_partition_output.stdout }}
+    target_partition: >
+      /dev/{{
+        target_partition_output.stdout_lines
+        | select('match', '^xvda[0-9]+$')
+        | first
+      }}
 
 - name: Check partition
   ansible.builtin.fail:
