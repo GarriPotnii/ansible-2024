@@ -21,7 +21,7 @@
     path: /etc/default/grub
     regexp: ^GRUB_CMDLINE_LINUX_DEFAULT
     line: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash noacpi  cpufreq.default_governor=perfomance"
-    create: true
+    mode: "0600"
   notify:
     - Update GRUB
 
