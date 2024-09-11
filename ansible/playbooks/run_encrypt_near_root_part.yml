@@ -1,5 +1,0 @@
----
-- name: Execute role
-  hosts: all
-  roles:
-    - encrypt_near_root_part
