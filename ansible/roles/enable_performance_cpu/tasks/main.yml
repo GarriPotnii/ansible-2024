@@ -15,6 +15,7 @@
       echo 'performance' > $cpu
     done
   when: "'performance' not in cpu_governor.stdout"
+  changed_when: false
 
 - name: Add performance parameters to GRUB configuration
   ansible.builtin.lineinfile:

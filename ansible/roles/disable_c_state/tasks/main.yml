@@ -9,6 +9,11 @@
   notify:
     - Update GRUB
 
+- name: Check if C-states are already disabled
+  ansible.builtin.stat:
+    path: /sys/devices/system/cpu/cpu0/cpuidle/state0/disable
+  register: cstate_stat
+
 - name: Copy script c-states
   ansible.builtin.copy:
     src: set_disable_c_state.sh
@@ -18,4 +23,5 @@
 - name: Execute c-states
   ansible.builtin.command:
     cmd: /tmp/set_disable_c_state.sh
-  become: true
+  when: cstate_stat.stat.exists and (cstate_stat.stat.size == 0)
+  changed_when: true

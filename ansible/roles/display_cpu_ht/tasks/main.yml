@@ -3,6 +3,7 @@
 - name: Display list of CPUs
   ansible.builtin.command: lscpu
   register: lscpu_output
+  changed_when: true
 
 - name: Show list of CPUs
   ansible.builtin.debug:

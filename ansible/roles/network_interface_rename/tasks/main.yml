@@ -25,9 +25,13 @@
     regexp: "^ *set-name: {{ current_interface_name }}$"
     line: "set-name: {{ network_interface_rename_new_interface_name }}"
     backup: true
+  register: update_netplan
+  when: netplan_check.stat.exists and current_interface_name != network_interface_rename_new_interface_name
 
 - name: Apply netplan configuration
   ansible.builtin.command: netplan apply
+  changed_when: update_netplan.rc != 0
+  
 - name: Check if the network interface was successfully renamed
   ansible.builtin.shell: ip -o route show default | awk '{print $5}'
   register: renamed_interface
