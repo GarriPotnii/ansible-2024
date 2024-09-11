@@ -1,3 +1,3 @@
 # roles/encrypt_disk/vars/main.yml
 ---
-cryptsetup_package_name: cryptsetup
+encrypt_second_disk_cryptsetup_package_name: cryptsetup

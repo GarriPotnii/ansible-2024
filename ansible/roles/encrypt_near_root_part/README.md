@@ -13,4 +13,4 @@ This Ansible role identifies the root disk and an available partition on it, the
 
 This role uses the following variables:
 
-- `luks_password`: The password for LUKS encryption.
+- `encrypt_near_root_part_luks_password`: The password for LUKS encryption.

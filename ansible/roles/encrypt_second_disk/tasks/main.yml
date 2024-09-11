@@ -11,7 +11,7 @@
 
 - name: Encrypt the disk with LUKS
   ansible.builtin.command: >
-    echo "{{ luks_password }}" |
+    echo "{{ encrypt_second_disk_luks_password }}" |
     cryptsetup luksFormat {{ disk_name }} --key-file -
   args:
     creates: /dev/mapper/encrypted_disk
@@ -20,7 +20,7 @@
 
 - name: Open the encrypted disk
   ansible.builtin.command: >
-    echo "{{ luks_password }}" |
+    echo "{{ encrypt_second_disk_luks_password }}" |
     cryptsetup open {{ disk_name }} encrypted_disk --key-file -
   register: cryptsetup_open
   failed_when: cryptsetup_open.rc != 0

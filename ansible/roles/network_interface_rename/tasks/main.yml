@@ -11,19 +11,19 @@
 
 - name: Check if the current interface name is already
   ansible.builtin.fail:
-    msg: The active network interface is already named {{ new_interface_name }}.
+    msg: The active network interface is already named {{ network_interface_rename_new_interface_name }}.
   when: current_interface_name == new_interface_name
 
 - name: Check if netplan configuration file exists
   ansible.builtin.stat:
-    path: "{{ netplan_config_path }}"
+    path: "{{ network_interface_rename_netplan_config_path }}"
   register: netplan_check
 
 - name: Update netplan configuration with new interface name
   ansible.builtin.lineinfile:
-    path: "{{ netplan_config_path }}"
-    regexp: '^ *set-name: {{ current_interface_name }}$'
-    line: "set-name: {{ new_interface_name }}"
+    path: "{{ network_interface_rename_netplan_config_path }}"
+    regexp: "^ *set-name: {{ current_interface_name }}$"
+    line: "set-name: {{ network_interface_rename_new_interface_name }}"
     backup: true
 
 - name: Apply netplan configuration
@@ -31,7 +31,7 @@
 - name: Check if the network interface was successfully renamed
   ansible.builtin.shell: ip -o route show default | awk '{print $5}'
   register: renamed_interface
-  failed_when: renamed_interface.stdout.strip() != "{{ new_interface_name }}"
+  failed_when: renamed_interface.stdout.strip() != "{{ network_interface_rename_new_interface_name }}"
   changed_when: false
 
 - name: Display the renamed network interface name

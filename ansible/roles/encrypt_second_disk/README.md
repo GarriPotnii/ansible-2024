@@ -14,4 +14,4 @@ This Ansible role performs encryption of a specified disk using LUKS (Linux Unif
 This role uses the following variables:
 
 - `disk_name`: The name of the disk to be encrypted (e.g., `/dev/sdb`).
-- `luks_password`: The password for LUKS encryption.
+- `encrypt_second_disk_luks_password`: The password for LUKS encryption.
