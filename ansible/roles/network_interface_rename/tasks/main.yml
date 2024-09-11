@@ -19,10 +19,12 @@
     path: "{{ netplan_config_path }}"
   register: netplan_check
 
-- name: Update netplan configuration with new interface name using sed
-  ansible.builtin.command: >
-    sed -i 's/set-name: {{ current_interface_name }}/set-name: {{ new_interface_name }}/' {{ netplan_config_path }}
-  when: netplan_check.stat.exists and current_interface_name != new_interface_name
+- name: Update netplan configuration with new interface name
+  ansible.builtin.lineinfile:
+    path: "{{ netplan_config_path }}"
+    regexp: '^ *set-name: {{ current_interface_name }}$'
+    line: "set-name: {{ new_interface_name }}"
+    backup: true
 
 - name: Apply netplan configuration
   ansible.builtin.command: netplan apply
