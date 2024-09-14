@@ -74,9 +74,8 @@ To use the roles in your Ansible playbooks, include the roles in your playbook f
   hosts: all
 
   roles:
-    - encrypt_second_disk
-    - encrypt_near_root_part
+    - encrypt_partition
+    - network_interface_rename
     - disable_c_state
     - enable_performance_cpu
-    - network_interface_rename
     - display_cpu_ht

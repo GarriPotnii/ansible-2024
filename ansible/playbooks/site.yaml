@@ -1,0 +1,65 @@
+---
+# - name: Encrypt the second disk in the system
+#   hosts: all
+#   become: true
+#   tags: encrypt
+#   pre_tasks:
+#     - name: Set disk name
+#       ansible.builtin.set_fact:
+#         encrypt_partition_partition_name: "{{ encrypt_disk_name }}"
+#   roles:
+#     - role: encrypt_partition
+
+# - name: Encrypt partition next to root
+#   hosts: all
+#   become: true
+#   tags: encrypt
+#   pre_tasks:
+#     - name: debug
+#       ansible.builtin.debug:
+#         var: ansible_mounts
+#     - name: Extract root disk partition name
+#       ansible.builtin.set_fact:
+#         root_disk: "{{ ansible_mounts | selectattr('mount', '==', '/') | map(attribute='device') | first }}"
+
+#     - name: Get target partition name
+#       ansible.builtin.set_fact:
+#         encrypt_partition_partition_name: "{{ root_disk | regex_replace('[0-9]+$', '') }}{{ root_disk | regex_search('[0-9]+$') | int + 1 }}"
+
+#     - name: Display partition name
+#       ansible.builtin.debug:
+#         msg: "Next to root partiton: {{ encrypt_partition_partition_name }}"
+#   roles:
+#     - role: encrypt_partition
+
+- name: Rename network interfaces
+  hosts: all
+  become: true
+  tags: network
+  roles:
+    - role: network_interface_rename
+
+- name: CPU performance improvements
+  hosts: all
+  become: true
+  tags: performance
+  roles:
+    - role: enable_performance_cpu
+
+- name: Print CPU info
+  hosts: all
+  become: true
+  tags: cpu_info
+  tasks:
+    - name: Get list of CPUs
+      ansible.builtin.command: lscpu
+      register: lscpu_output
+      changed_when: false
+
+    - name: Show list of CPUs
+      ansible.builtin.debug:
+        msg: "{{ lscpu_output.stdout.split('\n') }}"
+
+    - name: Display Hyper-Threading information
+      ansible.builtin.debug:
+        msg: "{{ 'Hyper-Threading enabled' if (ansible_facts.processor_threads_per_core | int) > 1 else 'Hyper-Threading is not enabled' }}"

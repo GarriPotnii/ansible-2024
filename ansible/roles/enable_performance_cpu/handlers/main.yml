@@ -1,6 +1,18 @@
-# roles/enable_performance_cpu/handlers/main.yml
 ---
-- name: Update GRUB
+- name: Update grub
   ansible.builtin.command: update-grub
-  register: grub_update_output
-  changed_when: "'No change' not in grub_update_output.stdout"
+  changed_when: true
+  notify:
+    - Reboot
+
+- name: Reload cpufrequtils
+  ansible.builtin.systemd_service:
+    name: cpufrequtils
+    state: reloaded
+    enabled: true
+    daemon_reload: true
+
+- name: Reboot
+  ansible.builtin.reboot:
+  when:
+    auto-reboot: true

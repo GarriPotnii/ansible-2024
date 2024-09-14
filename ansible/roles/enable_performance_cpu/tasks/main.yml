@@ -1,30 +1,45 @@
-# roles/enable_performance_cpu/tasks/main.yml
 ---
-- name: Check current CPU governor
-  ansible.builtin.command: cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-  register: cpu_governor
+- name: Get current C-state
+  ansible.builtin.command: cpupower idle-info
+  register: c_state_info
   changed_when: false
 
-- name: Display current CPU governor
+- name: Print current C-state
   ansible.builtin.debug:
-    msg: "Current CPU governor: {{ cpu_governor.stdout_lines }}"
+    msg: "{{ c_state_info.stdout_lines }}"
 
-- name: Set CPU governor to performance
-  ansible.builtin.shell: |
-    for cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-      echo 'performance' > $cpu
-    done
-  when: "'performance' not in cpu_governor.stdout"
+- name: Disable C-state in GRUB_CMDLINE_LINUX
+  ansible.builtin.replace:
+    path: /etc/default/grub
+    regexp: ^GRUB_CMDLINE_LINUX="((:?(?!{{ item.option }}={{ item.value }}).)*?)"$
+    replace: GRUB_CMDLINE_LINUX="\1 {{ item.option }}={{ item.value }}"
+    validate: /bin/sh %s
+    mode: "0664"
+  loop:
+    - option: processor.max_cstate
+      value: 0
+    - option: intel_idle.max_cstate
+      value: 0
+  loop_control:
+    label: "{{ item.option }}"
+  notify:
+    - Update grub
+
+- name: Disable C-state now
+  ansible.builtin.command: cpupower idle-set --disable-by-latency 0
   changed_when: false
 
-- name: Add performance parameters to GRUB configuration
-  ansible.builtin.lineinfile:
-    path: /etc/default/grub
-    regexp: ^GRUB_CMDLINE_LINUX_DEFAULT
-    line: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash noacpi  cpufreq.default_governor=perfomance"
-    mode: "0600"
-  notify:
-    - Update GRUB
+- name: Install cpufrequtils
+  ansible.builtin.package:
+    name: cpufrequtils
+    state: present
+
+- name: Set governor to performance
+  ansible.builtin.copy:
+    content: GOVERNOR="performance"
+    dest: /etc/default/cpufrequtils
+    mode: "0664"
+  notify: Reload cpufrequtils
 
 - name: Verify CPU governor has been set to performance
   ansible.builtin.command: cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor

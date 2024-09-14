@@ -1,3 +1,0 @@
-# roles/encrypt_near_root_part/vars/main.yml
----
-encrypt_near_root_part_luks_password: password

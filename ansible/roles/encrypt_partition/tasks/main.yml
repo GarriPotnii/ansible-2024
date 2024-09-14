@@ -1,0 +1,27 @@
+---
+- name: Check if the partition exists
+  ansible.builtin.stat:
+    path: "{{ encrypt_partition_partition_name }}"
+  register: partition_check
+
+- name: Fail if partition does not exist
+  ansible.builtin.fail:
+    msg: Partition {{ encrypt_partition_partition_name }} does not exist.
+  when: not partition_check.stat.exists
+
+- name: Install cryptsetup
+  ansible.builtin.package:
+    name: cryptsetup
+    state: present
+
+- name: (Create and) open the LUKS container with a passphrase
+  community.crypto.luks_device:
+    device: "{{ encrypt_partition_partition_name }}"
+    state: opened
+    passphrase: "{{ encrypt_partition_luks_password }}"
+  register: luks_opened
+
+- name: Fail open LUKS container
+  ansible.builtin.fail:
+    msg: Checking open the disk {{ encrypt_partition_partition_name }} failed
+  when: not luks_opened.name

@@ -1,3 +1,0 @@
-# roles/encrypt_disk/defaults/main.yml
----
-encrypt_second_disk_luks_password: default_secure_password

@@ -1,6 +1,0 @@
-# roles/disable_c_state/handlers/main.yml
----
-- name: Update GRUB
-  ansible.builtin.command: update-grub
-  register: grub_update_output
-  changed_when: "'No change' not in grub_update_output.stdout"

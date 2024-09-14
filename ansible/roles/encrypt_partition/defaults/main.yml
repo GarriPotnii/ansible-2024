@@ -1,0 +1,3 @@
+---
+encrypt_partition_luks_password: default_secure_password
+encrypt_partition_partition_name: ""

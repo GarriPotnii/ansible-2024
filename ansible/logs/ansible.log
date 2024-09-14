@@ -2634,3 +2634,510 @@ path. See https://docs.ansible.com/ansible-core/2.17/reference_appendices/interp
 }
 2024-08-19 06:59:32,539 p=16231 u=aleksandr.pintaev n=ansible | PLAY RECAP ***************************************************************************************************************************************************************************************************
 2024-08-19 06:59:32,539 p=16231 u=aleksandr.pintaev n=ansible | 3.121.22.114               : ok=25   changed=8    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+2024-09-14 14:57:04,279 p=95747 u=aleksandr.pintaev n=ansible | PLAY [Encrypt the second disk in the system] *****************************************************************************************************
+2024-09-14 14:57:04,288 p=95747 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] ***************************************************************************************************************************
+2024-09-14 14:57:24,017 p=95747 u=aleksandr.pintaev n=ansible | [WARNING]: Platform linux on host test is using the discovered Python interpreter at /usr/bin/python3.12, but future installation of another
+Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.17/reference_appendices/interpreter_discovery.html for more information.
+
+2024-09-14 14:57:24,018 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:57:24,023 p=95747 u=aleksandr.pintaev n=ansible | TASK [Set disk name] *****************************************************************************************************************************
+2024-09-14 14:57:24,044 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:57:24,056 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Check if the partition exists] *****************************************************************************************
+2024-09-14 14:57:28,569 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:57:28,578 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail if partition does not exist] **************************************************************************************
+2024-09-14 14:57:28,597 p=95747 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 14:57:28,603 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Install cryptsetup] ****************************************************************************************************
+2024-09-14 14:57:40,811 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:57:40,823 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : (Create and) open the LUKS container with a passphrase] ****************************************************************
+2024-09-14 14:58:05,851 p=95747 u=aleksandr.pintaev n=ansible | changed: [test]
+2024-09-14 14:58:05,861 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail open LUKS container] **********************************************************************************************
+2024-09-14 14:58:05,874 p=95747 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 14:58:05,891 p=95747 u=aleksandr.pintaev n=ansible | PLAY [Encrypt partition next to root] ************************************************************************************************************
+2024-09-14 14:58:05,895 p=95747 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] ***************************************************************************************************************************
+2024-09-14 14:58:15,714 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:58:15,719 p=95747 u=aleksandr.pintaev n=ansible | TASK [Extract root disk partition name] **********************************************************************************************************
+2024-09-14 14:58:15,789 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:58:15,792 p=95747 u=aleksandr.pintaev n=ansible | TASK [Get target partition name] *****************************************************************************************************************
+2024-09-14 14:58:15,811 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:58:15,814 p=95747 u=aleksandr.pintaev n=ansible | TASK [Display partition name] ********************************************************************************************************************
+2024-09-14 14:58:15,823 p=95747 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": "Next to root partiton: /dev/root1"
+}
+2024-09-14 14:58:15,831 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Check if the partition exists] *****************************************************************************************
+2024-09-14 14:58:20,517 p=95747 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 14:58:20,524 p=95747 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail if partition does not exist] **************************************************************************************
+2024-09-14 14:58:20,542 p=95747 u=aleksandr.pintaev n=ansible | fatal: [test]: FAILED! => {"changed": false, "msg": "Partition /dev/root1 does not exist."}
+2024-09-14 14:58:20,542 p=95747 u=aleksandr.pintaev n=ansible | PLAY RECAP ***************************************************************************************************************************************
+2024-09-14 14:58:20,542 p=95747 u=aleksandr.pintaev n=ansible | test                       : ok=10   changed=1    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2024-09-14 15:04:31,742 p=96386 u=aleksandr.pintaev n=ansible | PLAY [Encrypt the second disk in the system] *********************************************************************************************************
+2024-09-14 15:04:31,748 p=96386 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:04:48,650 p=96386 u=aleksandr.pintaev n=ansible | [WARNING]: Platform linux on host test is using the discovered Python interpreter at /usr/bin/python3.12, but future installation of another Python
+interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-core/2.17/reference_appendices/interpreter_discovery.html for
+more information.
+
+2024-09-14 15:04:48,651 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:04:48,657 p=96386 u=aleksandr.pintaev n=ansible | TASK [Set disk name] *********************************************************************************************************************************
+2024-09-14 15:04:48,670 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:04:48,678 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Check if the partition exists] *********************************************************************************************
+2024-09-14 15:04:53,304 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:04:53,316 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail if partition does not exist] ******************************************************************************************
+2024-09-14 15:04:53,329 p=96386 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:04:53,334 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Install cryptsetup] ********************************************************************************************************
+2024-09-14 15:05:05,427 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:05,438 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : (Create and) open the LUKS container with a passphrase] ********************************************************************
+2024-09-14 15:05:10,254 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:10,263 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail open LUKS container] **************************************************************************************************
+2024-09-14 15:05:10,276 p=96386 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:05:10,295 p=96386 u=aleksandr.pintaev n=ansible | PLAY [Encrypt partition next to root] ****************************************************************************************************************
+2024-09-14 15:05:10,299 p=96386 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:05:20,353 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:20,360 p=96386 u=aleksandr.pintaev n=ansible | TASK [debug] *****************************************************************************************************************************************
+2024-09-14 15:05:20,378 p=96386 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "ansible_mounts": [
+        {
+            "block_available": 1123486,
+            "block_size": 4096,
+            "block_total": 1758594,
+            "block_used": 635108,
+            "device": "/dev/root",
+            "dump": 0,
+            "fstype": "ext4",
+            "inode_available": 798947,
+            "inode_total": 917504,
+            "inode_used": 118557,
+            "mount": "/",
+            "options": "rw,relatime,discard,errors=remount-ro,commit=30",
+            "passno": 0,
+            "size_available": 4601798656,
+            "size_total": 7203201024,
+            "uuid": "e97ae3ba-1e02-4d97-9427-d5f37ff742a9"
+        },
+        {
+            "block_available": 0,
+            "block_size": 131072,
+            "block_total": 202,
+            "block_used": 202,
+            "device": "/dev/loop0",
+            "dump": 0,
+            "fstype": "squashfs",
+            "inode_available": 0,
+            "inode_total": 16,
+            "inode_used": 16,
+            "mount": "/snap/amazon-ssm-agent/7993",
+            "options": "ro,nodev,relatime,errors=continue,threads=single",
+            "passno": 0,
+            "size_available": 0,
+            "size_total": 26476544,
+            "uuid": "N/A"
+        },
+        {
+            "block_available": 0,
+            "block_size": 131072,
+            "block_total": 446,
+            "block_used": 446,
+            "device": "/dev/loop1",
+            "dump": 0,
+            "fstype": "squashfs",
+            "inode_available": 0,
+            "inode_total": 10944,
+            "inode_used": 10944,
+            "mount": "/snap/core18/2829",
+            "options": "ro,nodev,relatime,errors=continue,threads=single",
+            "passno": 0,
+            "size_available": 0,
+            "size_total": 58458112,
+            "uuid": "N/A"
+        },
+        {
+            "block_available": 0,
+            "block_size": 131072,
+            "block_total": 311,
+            "block_used": 311,
+            "device": "/dev/loop2",
+            "dump": 0,
+            "fstype": "squashfs",
+            "inode_available": 0,
+            "inode_total": 651,
+            "inode_used": 651,
+            "mount": "/snap/snapd/21759",
+            "options": "ro,nodev,relatime,errors=continue,threads=single",
+            "passno": 0,
+            "size_available": 0,
+            "size_total": 40763392,
+            "uuid": "N/A"
+        },
+        {
+            "block_available": 175787,
+            "block_size": 4096,
+            "block_total": 225380,
+            "block_used": 49593,
+            "device": "/dev/xvda16",
+            "dump": 0,
+            "fstype": "ext4",
+            "inode_available": 57891,
+            "inode_total": 58496,
+            "inode_used": 605,
+            "mount": "/boot",
+            "options": "rw,relatime",
+            "passno": 0,
+            "size_available": 720023552,
+            "size_total": 923156480,
+            "uuid": "9df3be1d-f619-4991-af0c-2c556f66595f"
+        },
+        {
+            "block_available": 201172,
+            "block_size": 512,
+            "block_total": 213663,
+            "block_used": 12491,
+            "device": "/dev/xvda15",
+            "dump": 0,
+            "fstype": "vfat",
+            "inode_available": 0,
+            "inode_total": 0,
+            "inode_used": 0,
+            "mount": "/boot/efi",
+            "options": "rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro",
+            "passno": 0,
+            "size_available": 103000064,
+            "size_total": 109395456,
+            "uuid": "349B-1BE8"
+        }
+    ]
+}
+2024-09-14 15:05:20,381 p=96386 u=aleksandr.pintaev n=ansible | TASK [Extract root disk partition name] **************************************************************************************************************
+2024-09-14 15:05:20,421 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:20,424 p=96386 u=aleksandr.pintaev n=ansible | TASK [Get target partition name] *********************************************************************************************************************
+2024-09-14 15:05:20,439 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:20,442 p=96386 u=aleksandr.pintaev n=ansible | TASK [Display partition name] ************************************************************************************************************************
+2024-09-14 15:05:20,449 p=96386 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": "Next to root partiton: /dev/root1"
+}
+2024-09-14 15:05:20,455 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Check if the partition exists] *********************************************************************************************
+2024-09-14 15:05:24,808 p=96386 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:05:24,820 p=96386 u=aleksandr.pintaev n=ansible | TASK [encrypt_partition : Fail if partition does not exist] ******************************************************************************************
+2024-09-14 15:05:24,836 p=96386 u=aleksandr.pintaev n=ansible | fatal: [test]: FAILED! => {"changed": false, "msg": "Partition /dev/root1 does not exist."}
+2024-09-14 15:05:24,837 p=96386 u=aleksandr.pintaev n=ansible | PLAY RECAP *******************************************************************************************************************************************
+2024-09-14 15:05:24,837 p=96386 u=aleksandr.pintaev n=ansible | test                       : ok=11   changed=0    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2024-09-14 15:12:50,793 p=97075 u=aleksandr.pintaev n=ansible | PLAY [Rename network interfaces] *********************************************************************************************************************
+2024-09-14 15:12:50,802 p=97075 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:13:08,001 p=97075 u=aleksandr.pintaev n=ansible | [WARNING]: Platform linux on host test is using the discovered Python interpreter at /usr/bin/python3.12, but future installation of another Python
+interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-core/2.17/reference_appendices/interpreter_discovery.html for
+more information.
+
+2024-09-14 15:13:08,001 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:08,042 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Get the current active network interface] ***************************************************************************
+2024-09-14 15:13:08,053 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:08,056 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Information about interface] ****************************************************************************************
+2024-09-14 15:13:08,066 p=97075 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "ansible_facts[current_interface_name]": {
+        "active": true,
+        "device": "enX0",
+        "features": {
+            "esp_hw_offload": "off [fixed]",
+            "esp_tx_csum_hw_offload": "off [fixed]",
+            "fcoe_mtu": "off [fixed]",
+            "generic_receive_offload": "on",
+            "generic_segmentation_offload": "on",
+            "highdma": "off [fixed]",
+            "hsr_dup_offload": "off [fixed]",
+            "hsr_fwd_offload": "off [fixed]",
+            "hsr_tag_ins_offload": "off [fixed]",
+            "hsr_tag_rm_offload": "off [fixed]",
+            "hw_tc_offload": "off [fixed]",
+            "l2_fwd_offload": "off [fixed]",
+            "large_receive_offload": "off [fixed]",
+            "loopback": "off [fixed]",
+            "macsec_hw_offload": "off [fixed]",
+            "netns_local": "off [fixed]",
+            "ntuple_filters": "off [fixed]",
+            "receive_hashing": "off [fixed]",
+            "rx_all": "off [fixed]",
+            "rx_checksumming": "on [fixed]",
+            "rx_fcs": "off [fixed]",
+            "rx_gro_hw": "off [fixed]",
+            "rx_gro_list": "off",
+            "rx_udp_gro_forwarding": "off",
+            "rx_udp_tunnel_port_offload": "off [fixed]",
+            "rx_vlan_filter": "off [fixed]",
+            "rx_vlan_offload": "off [fixed]",
+            "rx_vlan_stag_filter": "off [fixed]",
+            "rx_vlan_stag_hw_parse": "off [fixed]",
+            "scatter_gather": "on",
+            "tcp_segmentation_offload": "on",
+            "tls_hw_record": "off [fixed]",
+            "tls_hw_rx_offload": "off [fixed]",
+            "tls_hw_tx_offload": "off [fixed]",
+            "tx_checksum_fcoe_crc": "off [fixed]",
+            "tx_checksum_ip_generic": "off [fixed]",
+            "tx_checksum_ipv4": "on [fixed]",
+            "tx_checksum_ipv6": "on",
+            "tx_checksum_sctp": "off [fixed]",
+            "tx_checksumming": "on",
+            "tx_esp_segmentation": "off [fixed]",
+            "tx_fcoe_segmentation": "off [fixed]",
+            "tx_gre_csum_segmentation": "off [fixed]",
+            "tx_gre_segmentation": "off [fixed]",
+            "tx_gso_list": "off [fixed]",
+            "tx_gso_partial": "off [fixed]",
+            "tx_gso_robust": "on [fixed]",
+            "tx_ipxip4_segmentation": "off [fixed]",
+            "tx_ipxip6_segmentation": "off [fixed]",
+            "tx_lockless": "off [fixed]",
+            "tx_nocache_copy": "off",
+            "tx_scatter_gather": "on",
+            "tx_scatter_gather_fraglist": "off [fixed]",
+            "tx_sctp_segmentation": "off [fixed]",
+            "tx_tcp6_segmentation": "on",
+            "tx_tcp_ecn_segmentation": "off [fixed]",
+            "tx_tcp_mangleid_segmentation": "off",
+            "tx_tcp_segmentation": "on",
+            "tx_tunnel_remcsum_segmentation": "off [fixed]",
+            "tx_udp_segmentation": "off [fixed]",
+            "tx_udp_tnl_csum_segmentation": "off [fixed]",
+            "tx_udp_tnl_segmentation": "off [fixed]",
+            "tx_vlan_offload": "off [fixed]",
+            "tx_vlan_stag_hw_insert": "off [fixed]",
+            "vlan_challenged": "off [fixed]"
+        },
+        "hw_timestamp_filters": [],
+        "ipv4": {
+            "address": "172.30.42.149",
+            "broadcast": "",
+            "netmask": "255.255.240.0",
+            "network": "172.30.32.0",
+            "prefix": "20"
+        },
+        "ipv6": [
+            {
+                "address": "fe80::48e:b3ff:fece:73d7",
+                "prefix": "64",
+                "scope": "link"
+            }
+        ],
+        "macaddress": "06:8e:b3:ce:73:d7",
+        "mtu": 9001,
+        "pciid": "vif-0",
+        "promisc": false,
+        "timestamping": [],
+        "type": "ether"
+    }
+}
+2024-09-14 15:13:08,069 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Check if the current interface name is already renamed] *************************************************************
+2024-09-14 15:13:08,075 p=97075 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:13:08,077 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Capturing Existing Configuration] ***********************************************************************************
+2024-09-14 15:13:12,939 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:12,948 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Update netplan configuration with new interface name] ***************************************************************
+2024-09-14 15:13:17,499 p=97075 u=aleksandr.pintaev n=ansible | changed: [test]
+2024-09-14 15:13:17,509 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Apply netplan configuration] ****************************************************************************************
+2024-09-14 15:13:31,945 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:31,957 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Get the current network interface from default route] ***************************************************************
+2024-09-14 15:13:36,460 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:36,468 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Parse the renamed network interface from route output] **************************************************************
+2024-09-14 15:13:36,503 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:36,507 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Check if the network interface was successfully renamed] ************************************************************
+2024-09-14 15:13:36,515 p=97075 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:13:36,518 p=97075 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Display the renamed network interface name] *************************************************************************
+2024-09-14 15:13:36,527 p=97075 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": "The network interface is now named net0"
+}
+2024-09-14 15:13:36,539 p=97075 u=aleksandr.pintaev n=ansible | PLAY [CPU performance improvements] ******************************************************************************************************************
+2024-09-14 15:13:36,542 p=97075 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:13:46,169 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:46,184 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Get current C-state] **************************************************************************************************
+2024-09-14 15:13:50,744 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:13:50,750 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Print current C-state] ************************************************************************************************
+2024-09-14 15:13:50,765 p=97075 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": [
+        "CPUidle driver: acpi_idle",
+        "CPUidle governor: menu",
+        "analyzing CPU 0:",
+        "",
+        "Number of idle states: 2",
+        "Available idle states: POLL C1",
+        "POLL (DISABLED) :",
+        "Flags/Description: CPUIDLE CORE POLL IDLE",
+        "Latency: 0",
+        "Usage: 3580397002",
+        "Duration: 2261065424417",
+        "C1 (DISABLED) :",
+        "Flags/Description: ACPI HLT",
+        "Latency: 0",
+        "Usage: 6568633",
+        "Duration: 577548689531"
+    ]
+}
+2024-09-14 15:13:50,770 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Disable C-state in GRUB_CMDLINE_LINUX] ********************************************************************************
+2024-09-14 15:13:55,253 p=97075 u=aleksandr.pintaev n=ansible | changed: [test] => (item=processor.max_cstate)
+2024-09-14 15:13:59,693 p=97075 u=aleksandr.pintaev n=ansible | changed: [test] => (item=intel_idle.max_cstate)
+2024-09-14 15:13:59,706 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Disable C-state now] **************************************************************************************************
+2024-09-14 15:14:04,367 p=97075 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:14:04,379 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Install cpufrequtils] *************************************************************************************************
+2024-09-14 15:15:09,322 p=97075 u=aleksandr.pintaev n=ansible | changed: [test]
+2024-09-14 15:15:09,334 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Set governor to performance] ******************************************************************************************
+2024-09-14 15:15:13,036 p=97075 u=aleksandr.pintaev n=ansible | changed: [test]
+2024-09-14 15:15:13,046 p=97075 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Verify CPU governor has been set to performance] **********************************************************************
+2024-09-14 15:15:14,796 p=97075 u=aleksandr.pintaev n=ansible | fatal: [test]: FAILED! => {"changed": false, "cmd": ["cat", "/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"], "delta": "0:00:00.003719", "end": "2024-09-14 12:15:14.703195", "msg": "non-zero return code", "rc": 1, "start": "2024-09-14 12:15:14.699476", "stderr": "cat: '/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor': No such file or directory", "stderr_lines": ["cat: '/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor': No such file or directory"], "stdout": "", "stdout_lines": []}
+2024-09-14 15:15:14,798 p=97075 u=aleksandr.pintaev n=ansible | PLAY RECAP *******************************************************************************************************************************************
+2024-09-14 15:15:14,798 p=97075 u=aleksandr.pintaev n=ansible | test                       : ok=16   changed=4    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2024-09-14 15:17:33,757 p=97571 u=aleksandr.pintaev n=ansible | PLAY [Rename network interfaces] *********************************************************************************************************************
+2024-09-14 15:17:33,763 p=97571 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:17:51,862 p=97571 u=aleksandr.pintaev n=ansible | [WARNING]: Platform linux on host test is using the discovered Python interpreter at /usr/bin/python3.12, but future installation of another Python
+interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-core/2.17/reference_appendices/interpreter_discovery.html for
+more information.
+
+2024-09-14 15:17:51,863 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:17:51,876 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Get the current active network interface] ***************************************************************************
+2024-09-14 15:17:51,898 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:17:51,903 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Information about interface] ****************************************************************************************
+2024-09-14 15:17:51,920 p=97571 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "ansible_facts[current_interface_name]": {
+        "active": true,
+        "device": "net0",
+        "features": {
+            "esp_hw_offload": "off [fixed]",
+            "esp_tx_csum_hw_offload": "off [fixed]",
+            "fcoe_mtu": "off [fixed]",
+            "generic_receive_offload": "on",
+            "generic_segmentation_offload": "on",
+            "highdma": "off [fixed]",
+            "hsr_dup_offload": "off [fixed]",
+            "hsr_fwd_offload": "off [fixed]",
+            "hsr_tag_ins_offload": "off [fixed]",
+            "hsr_tag_rm_offload": "off [fixed]",
+            "hw_tc_offload": "off [fixed]",
+            "l2_fwd_offload": "off [fixed]",
+            "large_receive_offload": "off [fixed]",
+            "loopback": "off [fixed]",
+            "macsec_hw_offload": "off [fixed]",
+            "netns_local": "off [fixed]",
+            "ntuple_filters": "off [fixed]",
+            "receive_hashing": "off [fixed]",
+            "rx_all": "off [fixed]",
+            "rx_checksumming": "on [fixed]",
+            "rx_fcs": "off [fixed]",
+            "rx_gro_hw": "off [fixed]",
+            "rx_gro_list": "off",
+            "rx_udp_gro_forwarding": "off",
+            "rx_udp_tunnel_port_offload": "off [fixed]",
+            "rx_vlan_filter": "off [fixed]",
+            "rx_vlan_offload": "off [fixed]",
+            "rx_vlan_stag_filter": "off [fixed]",
+            "rx_vlan_stag_hw_parse": "off [fixed]",
+            "scatter_gather": "on",
+            "tcp_segmentation_offload": "on",
+            "tls_hw_record": "off [fixed]",
+            "tls_hw_rx_offload": "off [fixed]",
+            "tls_hw_tx_offload": "off [fixed]",
+            "tx_checksum_fcoe_crc": "off [fixed]",
+            "tx_checksum_ip_generic": "off [fixed]",
+            "tx_checksum_ipv4": "on [fixed]",
+            "tx_checksum_ipv6": "on",
+            "tx_checksum_sctp": "off [fixed]",
+            "tx_checksumming": "on",
+            "tx_esp_segmentation": "off [fixed]",
+            "tx_fcoe_segmentation": "off [fixed]",
+            "tx_gre_csum_segmentation": "off [fixed]",
+            "tx_gre_segmentation": "off [fixed]",
+            "tx_gso_list": "off [fixed]",
+            "tx_gso_partial": "off [fixed]",
+            "tx_gso_robust": "on [fixed]",
+            "tx_ipxip4_segmentation": "off [fixed]",
+            "tx_ipxip6_segmentation": "off [fixed]",
+            "tx_lockless": "off [fixed]",
+            "tx_nocache_copy": "off",
+            "tx_scatter_gather": "on",
+            "tx_scatter_gather_fraglist": "off [fixed]",
+            "tx_sctp_segmentation": "off [fixed]",
+            "tx_tcp6_segmentation": "on",
+            "tx_tcp_ecn_segmentation": "off [fixed]",
+            "tx_tcp_mangleid_segmentation": "off",
+            "tx_tcp_segmentation": "on",
+            "tx_tunnel_remcsum_segmentation": "off [fixed]",
+            "tx_udp_segmentation": "off [fixed]",
+            "tx_udp_tnl_csum_segmentation": "off [fixed]",
+            "tx_udp_tnl_segmentation": "off [fixed]",
+            "tx_vlan_offload": "off [fixed]",
+            "tx_vlan_stag_hw_insert": "off [fixed]",
+            "vlan_challenged": "off [fixed]"
+        },
+        "hw_timestamp_filters": [],
+        "ipv4": {
+            "address": "172.30.42.149",
+            "broadcast": "",
+            "netmask": "255.255.240.0",
+            "network": "172.30.32.0",
+            "prefix": "20"
+        },
+        "ipv6": [
+            {
+                "address": "fe80::48e:b3ff:fece:73d7",
+                "prefix": "64",
+                "scope": "link"
+            }
+        ],
+        "macaddress": "06:8e:b3:ce:73:d7",
+        "mtu": 9001,
+        "pciid": "vif-0",
+        "promisc": false,
+        "timestamping": [],
+        "type": "ether"
+    }
+}
+2024-09-14 15:17:51,923 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Check if the current interface name is already renamed] *************************************************************
+2024-09-14 15:17:51,932 p=97571 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": "The active network interface is already named net0."
+}
+2024-09-14 15:17:51,934 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Capturing Existing Configuration] ***********************************************************************************
+2024-09-14 15:17:51,941 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,944 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Update netplan configuration with new interface name] ***************************************************************
+2024-09-14 15:17:51,950 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,953 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Apply netplan configuration] ****************************************************************************************
+2024-09-14 15:17:51,958 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,961 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Get the current network interface from default route] ***************************************************************
+2024-09-14 15:17:51,967 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,969 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Parse the renamed network interface from route output] **************************************************************
+2024-09-14 15:17:51,976 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,978 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Check if the network interface was successfully renamed] ************************************************************
+2024-09-14 15:17:51,984 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:51,986 p=97571 u=aleksandr.pintaev n=ansible | TASK [network_interface_rename : Display the renamed network interface name] *************************************************************************
+2024-09-14 15:17:51,991 p=97571 u=aleksandr.pintaev n=ansible | skipping: [test]
+2024-09-14 15:17:52,002 p=97571 u=aleksandr.pintaev n=ansible | PLAY [CPU performance improvements] ******************************************************************************************************************
+2024-09-14 15:17:52,005 p=97571 u=aleksandr.pintaev n=ansible | TASK [Gathering Facts] *******************************************************************************************************************************
+2024-09-14 15:18:01,901 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:18:01,911 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Get current C-state] **************************************************************************************************
+2024-09-14 15:18:06,465 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:18:06,479 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Print current C-state] ************************************************************************************************
+2024-09-14 15:18:06,495 p=97571 u=aleksandr.pintaev n=ansible | ok: [test] => {
+    "msg": [
+        "CPUidle driver: acpi_idle",
+        "CPUidle governor: menu",
+        "analyzing CPU 0:",
+        "",
+        "Number of idle states: 2",
+        "Available idle states: POLL C1",
+        "POLL (DISABLED) :",
+        "Flags/Description: CPUIDLE CORE POLL IDLE",
+        "Latency: 0",
+        "Usage: 3580753365",
+        "Duration: 2261236185374",
+        "C1 (DISABLED) :",
+        "Flags/Description: ACPI HLT",
+        "Latency: 0",
+        "Usage: 6568633",
+        "Duration: 577548689531"
+    ]
+}
+2024-09-14 15:18:06,499 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Disable C-state in GRUB_CMDLINE_LINUX] ********************************************************************************
+2024-09-14 15:18:10,954 p=97571 u=aleksandr.pintaev n=ansible | ok: [test] => (item=processor.max_cstate)
+2024-09-14 15:18:15,359 p=97571 u=aleksandr.pintaev n=ansible | ok: [test] => (item=intel_idle.max_cstate)
+2024-09-14 15:18:15,371 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Disable C-state now] **************************************************************************************************
+2024-09-14 15:18:19,962 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:18:19,970 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Install cpufrequtils] *************************************************************************************************
+2024-09-14 15:18:31,632 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:18:31,641 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Set governor to performance] ******************************************************************************************
+2024-09-14 15:18:40,328 p=97571 u=aleksandr.pintaev n=ansible | ok: [test]
+2024-09-14 15:18:40,343 p=97571 u=aleksandr.pintaev n=ansible | TASK [enable_performance_cpu : Verify CPU governor has been set to performance] **********************************************************************
+2024-09-14 15:18:44,905 p=97571 u=aleksandr.pintaev n=ansible | fatal: [test]: FAILED! => {"changed": false, "cmd": ["cat", "/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"], "delta": "0:00:00.040793", "end": "2024-09-14 12:18:44.509574", "msg": "non-zero return code", "rc": 1, "start": "2024-09-14 12:18:44.468781", "stderr": "cat: '/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor': No such file or directory", "stderr_lines": ["cat: '/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor': No such file or directory"], "stdout": "", "stdout_lines": []}
+2024-09-14 15:18:44,906 p=97571 u=aleksandr.pintaev n=ansible | PLAY RECAP *******************************************************************************************************************************************
+2024-09-14 15:18:44,906 p=97571 u=aleksandr.pintaev n=ansible | test                       : ok=11   changed=0    unreachable=0    failed=1    skipped=7    rescued=0    ignored=0   

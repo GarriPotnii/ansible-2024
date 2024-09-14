@@ -12,4 +12,4 @@ This Ansible role is designed to manage the renaming of network interfaces on sy
 ## Role Variables
 
 - `network_interface_rename_new_interface_name`: The new name for the network interface.
-- `network_interface_rename_netplan_config_path`: The path to the `netplan` configuration file (e.g., `/etc/netplan/01-netcfg.yaml`).
+- `network_interface_rename_netplan_config`: The path to the `netplan` configuration file (e.g., `/etc/netplan/01-netcfg.yaml`).
