@@ -1,36 +1,57 @@
 ---
-# - name: Encrypt the second disk in the system
-#   hosts: all
-#   become: true
-#   tags: encrypt
-#   pre_tasks:
-#     - name: Set disk name
-#       ansible.builtin.set_fact:
-#         encrypt_partition_partition_name: "{{ encrypt_disk_name }}"
-#   roles:
-#     - role: encrypt_partition
+- name: Encrypt the second disk in the system
+  hosts: all
+  become: true
+  tags: encrypt
+  pre_tasks:
+    - name: Set disk name
+      ansible.builtin.set_fact:
+        encrypt_partition_partition_name: "{{ encrypt_disk_name }}"
+  roles:
+    - role: encrypt_partition
 
-# - name: Encrypt partition next to root
-#   hosts: all
-#   become: true
-#   tags: encrypt
-#   pre_tasks:
-#     - name: debug
-#       ansible.builtin.debug:
-#         var: ansible_mounts
-#     - name: Extract root disk partition name
-#       ansible.builtin.set_fact:
-#         root_disk: "{{ ansible_mounts | selectattr('mount', '==', '/') | map(attribute='device') | first }}"
+- name: Encrypt partition next to root
+  hosts: all
+  become: true
+  tags: encrypt
+  gather_facts: false
+  pre_tasks:
+    - name: Run lsblk to get block devices and labels
+      command: "lsblk -o NAME,MOUNTPOINT,LABEL -J"
+      register: lsblk_output
+      changed_when: false
 
-#     - name: Get target partition name
-#       ansible.builtin.set_fact:
-#         encrypt_partition_partition_name: "{{ root_disk | regex_replace('[0-9]+$', '') }}{{ root_disk | regex_search('[0-9]+$') | int + 1 }}"
+    - name: Parse lsblk output
+      set_fact:
+        lsblk_devices: "{{ lsblk_output.stdout | from_json }}"
 
-#     - name: Display partition name
-#       ansible.builtin.debug:
-#         msg: "Next to root partiton: {{ encrypt_partition_partition_name }}"
-#   roles:
-#     - role: encrypt_partition
+    - name: Find the device with root mountpoint
+      set_fact:
+        rootfs_device: >
+          {{
+            lsblk_devices.blockdevices | selectattr('children', 'defined') |
+            map(attribute='children') |
+            select('search', 'cloudimg-rootfs') | first
+          }}
+
+    - name: Find index of rootfs device
+      set_fact:
+        root_index: > 
+          {{ lookup('ansible.utils.index_of', (rootfs_device | map(attribute='mountpoint')), 'eq', '/') }}
+
+    - name: Find the next disk
+      set_fact:
+        next_disk: "{{ rootfs_device[root_index | int + 1]}}"
+
+    - name: Show next disk
+      debug:
+        msg: "Next disk is: {{ next_disk }}"
+
+    - name: Set disk name
+      ansible.builtin.set_fact:
+        encrypt_partition_partition_name: "/dev/{{ next_disk.name }}"
+  roles:
+    - role: encrypt_partition
 
 - name: Rename network interfaces
   hosts: all

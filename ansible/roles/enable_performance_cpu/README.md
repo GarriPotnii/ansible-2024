@@ -18,4 +18,4 @@ This role does not use any configurable variables.
 
 ## Dependencies
 
-This role has no dependencies.
+- `auto-reboot`: Reboot host after applying perfomance settings
