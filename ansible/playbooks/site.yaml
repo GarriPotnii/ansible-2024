@@ -17,16 +17,16 @@
   gather_facts: false
   pre_tasks:
     - name: Run lsblk to get block devices and labels
-      command: "lsblk -o NAME,MOUNTPOINT,LABEL -J"
+      ansible.builtin.command: lsblk -o NAME,MOUNTPOINT,LABEL -J
       register: lsblk_output
       changed_when: false
 
     - name: Parse lsblk output
-      set_fact:
+      ansible.builtin.set_fact:
         lsblk_devices: "{{ lsblk_output.stdout | from_json }}"
 
     - name: Find the device with root mountpoint
-      set_fact:
+      ansible.builtin.set_fact:
         rootfs_device: >
           {{
             lsblk_devices.blockdevices | selectattr('children', 'defined') |
@@ -35,21 +35,21 @@
           }}
 
     - name: Find index of rootfs device
-      set_fact:
-        root_index: > 
+      ansible.builtin.set_fact:
+        root_index: >
           {{ lookup('ansible.utils.index_of', (rootfs_device | map(attribute='mountpoint')), 'eq', '/') }}
 
     - name: Find the next disk
-      set_fact:
-        next_disk: "{{ rootfs_device[root_index | int + 1]}}"
+      ansible.builtin.set_fact:
+        next_disk: "{{ rootfs_device[root_index | int + 1] }}"
 
     - name: Show next disk
-      debug:
+      ansible.builtin.debug:
         msg: "Next disk is: {{ next_disk }}"
 
     - name: Set disk name
       ansible.builtin.set_fact:
-        encrypt_partition_partition_name: "/dev/{{ next_disk.name }}"
+        encrypt_partition_partition_name: /dev/{{ next_disk.name }}
   roles:
     - role: encrypt_partition
 

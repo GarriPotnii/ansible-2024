@@ -1,81 +1,67 @@
-# Ansible Project: System Optimization and Disk Encryption
+# Ansible Playbook: System Configuration and Optimization
 
-## Overview
+This Ansible playbook performs various system tasks, including encrypting partitions, renaming network interfaces, and improving CPU performance. It is designed to automate key configurations for systems requiring enhanced security and performance.
 
-This Ansible project provides a set of roles designed for system optimization and disk encryption. The roles included in this project help you:
+## Playbook Structure
 
-- **Disable CPU C-States**: Manage and disable C-states on CPUs to potentially enhance system performance.
-- **Display CPU Information**: Display detailed information about the system's CPUs and check if Hyper-Threading is enabled.
-- **Enable CPU Performance Mode**: Configure CPUs to operate in performance mode, bypassing energy-saving states.
-- **Encrypt Second Disk**: Encrypt disks using LUKS (Linux Unified Key Setup) to secure data.
-- **Rename Network Interface**: Rename active network interface by netplan
-- **Encrypt Near Root Partition**: Encrypt partiotion near root partition, using LUKS (Linux Unified Key Setup) to secure data.
+### 1. Encrypt the Second Disk in the System
 
-## Roles
+This playbook encrypts the second disk found on the target system using the `encrypt_partition` role.
 
-### 1. **Disable C-States**
-Disables CPU C-states to prevent the CPU from entering lower power states, which might improve system performance.
+- **Hosts**: All
+- **Tags**: `encrypt`
+- **Role**: `encrypt_partition`
+- **Pre-tasks**:
+  - Sets the disk name based on the `encrypt_disk_name` variable.
+  - The disk is encrypted with LUKS, and the encryption passphrase is configurable.
 
-**Key Tasks:**
-- Check if C-state files are present.
-- Disable C-states for all CPUs.
+### 2. Encrypt Partition Next to Root
 
-### 2. **Display CPU Information**
-Displays detailed information about the system's CPUs and checks if Hyper-Threading is enabled.
+This playbook locates the partition next to the root filesystem and encrypts it.
 
-**Key Tasks:**
-- Display list of CPUs.
-- Show CPU information using `lscpu`.
-- Check and display Hyper-Threading status.
+- **Hosts**: All
+- **Tags**: `encrypt`
+- **Role**: `encrypt_partition`
+- **Pre-tasks**:
+  - Gathers block device information using `lsblk`.
+  - Identifies the root filesystem device and the partition next to it.
+  - The identified partition is encrypted using LUKS.
 
-### 3. **Enable Performance Mode**
-Configures the CPU to run in performance mode by setting the appropriate governor.
+### 3. Rename Network Interfaces
 
-**Key Tasks:**
-- Check if the CPU governor file exists.
-- Set CPU governor to performance.
+This playbook renames the active network interface using the `network_interface_rename` role.
 
-### 4. **Encrypt Second Disk with LUKS**
-Encrypts second disk  using LUKS and manages the encryption lifecycle.
+- **Hosts**: All
+- **Tags**: `network`
+- **Role**: `network_interface_rename`
+- **Description**:
+  - Renames the active network interface according to the defined configuration in `network_interface_rename_new_interface_name`.
 
-**Key Tasks:**
-- Verify the existence of the disk.
-- Encrypt and open the disk.
-- Manage encrypted disk and handle errors.
+### 4. CPU Performance Improvements
 
-### 5. **Encrypt Partition with LUKS**
+This playbook applies CPU performance optimizations using the `enable_performance_cpu` role.
 
-**Key Tasks:**
-- Verify the existence of partition.
-- Encrypt and open the partition.
-- Manage encrypted partitions and handle errors
+- **Hosts**: All
+- **Tags**: `performance`
+- **Role**: `enable_performance_cpu`
+- **Description**:
+  - Disables CPU C-states to prevent power-saving features from reducing performance.
+  - Sets the CPU frequency governor to `performance` mode.
 
-### 6. **Rename Network Interfaces**
-- Get the current active network interface
-- Set the active network interface name
-- Check if the current interface name is already
-- Check if netplan configuration file exists
-- Update netplan configuration with new interface name using sed
-- Apply netplan configuration
-- Check if the network interface was successfully renamed
-- Display the renamed network interface name
+### 5. Print CPU Info
 
-## Requirements
+This playbook gathers and displays CPU information, including details on whether Hyper-Threading is enabled.
 
-- Ansible (version 2.9 or higher recommended).
-- `cryptsetup` for disk encryption.
-- Basic shell commands (`lsblk`, `grep`, `awk`, `sed`, `LUKS`) for disk and partition management.
+- **Hosts**: All
+- **Tags**: `cpu_info`
+- **Tasks**:
+  - Retrieves detailed CPU information using the `lscpu` command.
+  - Displays Hyper-Threading status based on the number of threads per core.
 
-## Usage
+## How to Run the Playbook
 
-To use the roles in your Ansible playbooks, include the roles in your playbook file and configure the necessary variables. For example:
+You can run this playbook with specific tags to execute only certain sections. For example:
 
-```yaml
-  hosts: all
-
-  roles:
-    - encrypt_partition
-    - network_interface_rename
-    - disable_c_state
-    - enable_performance_cpu
-    - display_cpu_ht
+- To encrypt disks, use:
+  ```bash
+  ansible-playbook playbook.yml --tags encrypt
